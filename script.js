@@ -26,14 +26,11 @@ let heartsInterval;
    ========================================= */
 
 function openLightbox(polaroidElement) {
-    // 1. Get the image source from the clicked polaroid
     const imgElement = polaroidElement.querySelector('img');
     const src = imgElement.src;
 
-    // 2. Set the lightbox image
     lightboxImg.src = src;
 
-    // 3. Show Overlay and Lightbox
     overlay.classList.add('show');
     lightbox.classList.add('show');
 }
@@ -43,7 +40,6 @@ function closeLightbox() {
     lightbox.classList.remove('show');
 }
 
-// Escape key to close
 document.addEventListener('keydown', (e) => {
     if (e.key === "Escape") closeLightbox();
 });
@@ -58,14 +54,11 @@ function checkPassword() {
     
     if (input === "i love you" || input === "iloveyou") {
         
-        // Play Music
         bgMusic.play().catch(error => console.log("Audio play error: ", error));
         bgMusic.volume = 0.5;
 
-        // Start Hearts
         startHearts();
 
-        // Animation Sequence
         loginScreen.style.opacity = '0';
         
         setTimeout(() => {
@@ -141,7 +134,6 @@ passwordInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') checkPassword();
 });
 
-// Navigation
 function showSection(sectionId) {
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => section.classList.add('hidden'));
