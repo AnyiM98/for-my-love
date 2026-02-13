@@ -13,7 +13,11 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="overlay"></div>
+    <div id="overlay" onclick="closeLightbox()"></div>
+
+    <div id="lightbox" class="hidden" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Zoomed Memory">
+    </div>
 
     <div id="hearts-container"></div>
 
@@ -88,23 +92,22 @@
 
             <div id="gallery" class="section hidden">
                 <h2>14 of our fav times together ❤️</h2>
-                <p style="color: #d63384; font-size: 0.9rem; margin-bottom: 20px;">(Click a photo to enlarge)</p>
                 
                 <div class="memory-pile">
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory1.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory2.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory3.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory4.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory5.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory6.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory7.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory8.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory9.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory10.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory11.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory12.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory13.jpeg" alt="Memory"></div>
-                    <div class="polaroid" onclick="bringToFront(this)"><img src="memory14.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory1.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory2.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory3.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory4.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory5.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory6.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory7.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory8.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory9.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory10.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory11.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory12.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory13.jpeg" alt="Memory"></div>
+                    <div class="polaroid" onclick="openLightbox(this)"><img src="memory14.jpeg" alt="Memory"></div>
                 </div>
             </div>
 
