@@ -198,84 +198,55 @@ nav button.active {
     font-weight: bold;
 }
 
-/* CAROUSEL STYLES (NEW) */
-.carousel-container {
-    max-width: 100%;
+/* POLAROID PILE STYLES */
+.memory-pile {
     position: relative;
-    margin: auto;
+    width: 100%;
+    height: 400px; /* Space for the pile */
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.carousel-slide {
-    display: none;
-    animation: fade 1.5s;
+.polaroid {
+    position: absolute;
+    width: 150px;
+    background: white;
+    padding: 10px 10px 30px 10px; /* Extra bottom padding for Polaroid look */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform-origin: center;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+    border-radius: 2px;
+    z-index: 1;
 }
 
-/* Active slide is visible */
-.carousel-slide.active {
-    display: block;
-}
-
-.media-content {
+.polaroid img {
     width: 100%;
     height: auto;
-    max-height: 400px;
-    object-fit: contain; /* Keeps aspect ratio */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    background: black; /* Good for videos */
+    display: block;
+    border: 1px solid #eee;
 }
 
-/* Next & Previous buttons */
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    margin-top: -22px;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-    background-color: rgba(0,0,0,0.3); /* Transparent dark background */
+/* Hover effect for unclicked items */
+.polaroid:hover {
+    z-index: 10;
+    transform: scale(1.1) !important; /* Temporarily scale up */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-/* Position the "next button" to the right */
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-}
-
-.prev {
-    left: 0;
-    border-radius: 0 3px 3px 0;
-}
-
-.prev:hover, .next:hover {
-    background-color: rgba(214, 51, 132, 0.8); /* Pink on hover */
-}
-
-/* Number text (1/14 etc) */
-.number-text {
-    color: #d63384;
-    font-size: 14px;
-    padding: 8px 12px;
-    position: relative;
-    font-weight: bold;
-    margin-top: 5px;
+/* The Active Class (When clicked) */
+.polaroid.active {
+    z-index: 100;
+    transform: scale(1.5) rotate(0deg) !important; /* Reset rotation and zoom in */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
 /* ANIMATIONS */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fade {
-    from {opacity: .4}
-    to {opacity: 1}
 }
 
 @keyframes blink {
