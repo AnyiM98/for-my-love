@@ -90,7 +90,7 @@ button:hover {
     height: 100%;
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
     display: flex;
-    flex-direction: column; /* Stack text vertically */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 999;
@@ -198,38 +198,91 @@ nav button.active {
     font-weight: bold;
 }
 
-/* Gallery / Memories */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
+/* CAROUSEL STYLES (NEW) */
+.carousel-container {
+    max-width: 100%;
+    position: relative;
+    margin: auto;
 }
 
-.gallery-grid img {
+.carousel-slide {
+    display: none;
+    animation: fade 1.5s;
+}
+
+/* Active slide is visible */
+.carousel-slide.active {
+    display: block;
+}
+
+.media-content {
     width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain; /* Keeps aspect ratio */
     border-radius: 10px;
-    transition: transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background: black; /* Good for videos */
 }
 
-.gallery-grid img:hover {
-    transform: scale(1.05);
+/* Next & Previous buttons */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0,0,0,0.3); /* Transparent dark background */
+}
+
+/* Position the "next button" to the right */
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev {
+    left: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(214, 51, 132, 0.8); /* Pink on hover */
+}
+
+/* Number text (1/14 etc) */
+.number-text {
+    color: #d63384;
+    font-size: 14px;
+    padding: 8px 12px;
+    position: relative;
+    font-weight: bold;
+    margin-top: 5px;
 }
 
 /* ANIMATIONS */
-
-/* Fade In */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Cursor Blink */
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+}
+
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
 
-/* Error Shake */
 .shake {
     animation: shake 0.5s;
 }
@@ -242,11 +295,9 @@ nav button.active {
     100% { transform: translateX(0); }
 }
 
-/* FALLING HEARTS ANIMATION */
 .heart {
     position: fixed;
     top: -10vh;
-    /* Font size is set in JS randomly, but we set a default here */
     font-size: 1.5rem; 
     z-index: 1; 
     user-select: none;
@@ -255,17 +306,10 @@ nav button.active {
 }
 
 @keyframes fall {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0.5;
-    }
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0.5; }
 }
 
-/* HEARTBEAT ANIMATION (For Happy Valentines Text) */
 .heartbeat {
     animation: heartbeat 1.5s infinite;
     display: inline-block;
@@ -273,8 +317,8 @@ nav button.active {
 
 @keyframes heartbeat {
     0% { transform: scale(1); }
-    14% { transform: scale(1.1); } /* Thump */
+    14% { transform: scale(1.1); }
     28% { transform: scale(1); }
-    42% { transform: scale(1.1); } /* Thump */
+    42% { transform: scale(1.1); }
     70% { transform: scale(1); }
 }
