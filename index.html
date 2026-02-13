@@ -2,102 +2,162 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Love</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <title>My Valentine 🖤</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0f0f0f, #1a0000);
+            color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 700px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #ff4d6d;
+            margin-bottom: 10px;
+        }
+
+        .hint {
+            color: #aaa;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            width: 70%;
+            margin-bottom: 15px;
+            background-color: #1c1c1c;
+            color: white;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #8b0000;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #ff0033;
+            box-shadow: 0 0 15px #ff0033;
+        }
+
+        #letter {
+            margin-top: 30px;
+            text-align: left;
+            line-height: 1.7;
+            white-space: pre-line;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            min-height: 200px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            background-color: #ff4d6d;
+            animation: blink 1s infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
 </head>
+
 <body>
 
-    <div id="login-screen">
-        <div class="login-box">
-            <h2>Enter the secret code</h2>
-            <input type="password" id="password-input" placeholder="Hint: what we say before bed">
-            <button onclick="checkPassword()">Enter</button>
-            <p id="error-message">Wrong code, try again ❤️</p>
-        </div>
-    </div>
+<div class="container">
+    <h1>🖤 For My Yellow 🖤</h1>
+    <p class="hint">Hint: what we say before bed</p>
 
-    <div id="main-content" class="hidden">
-        <header>
-            <h1>Welcome my love, enjoy your stay</h1>
-        </header>
+    <input type="text" id="secretInput" placeholder="Enter the secret words...">
+    <br>
+    <button onclick="checkSecret()">Open Letter 💌</button>
 
-        <nav>
-            <button onclick="showSection('letter')" class="active">💌 Letter</button>
-            <button onclick="showSection('music')">🎵 Music</button>
-            <button onclick="showSection('notes')">📝 Notes</button>
-            <button onclick="showSection('gallery')">📷 Gallery</button>
-        </nav>
+    <div id="letter" class="hidden"></div>
+</div>
 
-        <div class="container">
-            
-            <div id="letter" class="section">
-                <h2>The Love of my Life,</h2>
-                <div class="letter-text">
-                    <p>Another new year and you're still the best thing that has happened to me.</p>
-                    
-                    <p>You’re beautiful, you’re kind, you’re smart and sometimes you’re even funny.<br>
-                    You’re the best gf in the world.</p>
-                    
-                    <p>You make this love and relationship thing the easiest thing in the world. It’s so natural.</p>
-                    
-                    <p>I will make you happy, comfortable, loved as long as I draw breath. I promise, again.</p>
-                    
-                    <br>
-                    <p style="line-height: 1.8;">
-                        My lover<br>
-                        My baby<br>
-                        My princess<br>
-                        Ifenkili m<br>
-                        Hot stuff<br>
-                        My innocent baddie<br>
-                        My horny waterfall 🌚
-                    </p>
-                    <br>
-                    
-                    <p><strong>I LOVE YOU MY YELLOW!</strong></p>
-                    <p><strong>I LOVE YOU SO MUCH!</strong></p>
-                    <p><strong>I WILL KEEP LOVING YOU FOREVER ❤️</strong></p>
-                </div>
-            </div>
+<script>
+    const fullText = `The Love of my Life,
 
-            <div id="music" class="section hidden">
-                <h2>Songs that remind me of you</h2>
-                <div class="song-list">
-                    <div class="song-item">
-                        <div class="icon">🎵</div>
-                        <div class="info">
-                            <h3>Song Title 1</h3>
-                            <p>Artist Name</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+Another new year and you're still the best thing that has happened to me. 
 
-            <div id="notes" class="section hidden">
-                <h2>Some reminders</h2>
-                <ul class="reminders">
-                    <li>Take care always ❤️</li>
-                    <li>Eat on time 🍎</li>
-                    <li>You're mine, always 🔒</li>
-                    <li>I love you so much! 💖</li>
-                </ul>
-            </div>
+You’re beautiful, you’re kind, you’re smart and sometimes you’re even funny.
+You’re the best gf in the world.
 
-            <div id="gallery" class="section hidden">
-                <h2>Flowers for you</h2>
-                <div class="gallery-grid">
-                    <img src="https://images.unsplash.com/photo-1563241527-3004b7be0fee" alt="Flower">
-                    <img src="https://images.unsplash.com/photo-1490750967868-bcd363505d35" alt="Flower">
-                    <img src="https://images.unsplash.com/photo-1562690868-60bbe7293e94" alt="Flower">
-                    <img src="https://images.unsplash.com/photo-1533616688419-b7a585564566" alt="Flower">
-                </div>
-            </div>
+You make this love and relationship thing the easiest thing in the world. It’s so natural. 
 
-        </div>
-    </div>
+I will make you happy, comfortable, loved as long as I draw breath. I promise, again.
 
-    <script src="script.js"></script>
+My lover
+My baby
+My princess
+Ifenkili m
+Hot stuff
+My innocent baddie
+My horny waterfall 🌚
+
+I LOVE YOU MY YELLOW!
+I LOVE YOU SO MUCH!
+I WILL KEEP LOVING YOU FOREVER ❤️`;
+
+    function checkSecret() {
+        const input = document.getElementById("secretInput").value.toLowerCase();
+        const letter = document.getElementById("letter");
+
+        if (input === "i love you") {
+            letter.classList.remove("hidden");
+            typeWriter(letter, fullText, 30);
+        } else {
+            alert("That's not it... try again 🖤");
+        }
+    }
+
+    function typeWriter(element, text, speed) {
+        element.innerHTML = "";
+        let i = 0;
+
+        function typing() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typing, speed);
+            }
+        }
+
+        typing();
+    }
+</script>
+
 </body>
 </html>
