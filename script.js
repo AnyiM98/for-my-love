@@ -1,5 +1,5 @@
 // CONFIGURATION
-const SECRET_CODE = "i love you"; // Change this to your desired code (e.g., anniversary)
+const SECRET_CODE = "i love you"; 
 
 // DOM Elements
 const loginScreen = document.getElementById('login-screen');
@@ -9,7 +9,7 @@ const errorMessage = document.getElementById('error-message');
 
 // Check Password Function
 function checkPassword() {
-    const input = passwordInput.value;
+    const input = passwordInput.value.toLowerCase().trim(); // Converts input to lowercase and removes extra spaces
     if (input === SECRET_CODE) {
         // Correct Password
         loginScreen.style.opacity = '0';
@@ -35,22 +35,17 @@ passwordInput.addEventListener('keypress', function (e) {
 
 // Navigation Function
 function showSection(sectionId) {
-    // Hide all sections
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => section.classList.add('hidden'));
 
-    // Show the selected section
     document.getElementById(sectionId).classList.remove('hidden');
 
-    // Update buttons
     const buttons = document.querySelectorAll('nav button');
     buttons.forEach(btn => btn.classList.remove('active'));
     
-    // Highlight active button (simple way matches by text content or index, 
-    // but here we just find the button that called this. 
-    // Since we called it from HTML, we can manually manage active class in HTML or complex JS.
-    // For simplicity, let's just loop and set active based on text for now or simple logic.)
-    
-    // Actually, a simpler way for the button active state:
-    event.target.classList.add('active');
+    // Highlight the clicked button
+    const clickedBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(sectionId));
+    if (clickedBtn) {
+        clickedBtn.classList.add('active');
+    }
 }
