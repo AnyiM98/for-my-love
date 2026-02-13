@@ -23,22 +23,22 @@ h1, h2 {
 }
 
 /* ============================
-   POPUP LAYERS (Fixed)
+   POPUP LAYERS (Z-Index Fix)
    ============================ */
 
-/* 1. The Dark Overlay (Background) */
+/* 1. The Dark Overlay */
 #overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85); /* Slightly darker */
-    z-index: 9998; /* High, but LOWER than the lightbox */
+    background: rgba(0, 0, 0, 0.85); /* Dark background */
+    z-index: 20000; /* Very high */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    backdrop-filter: blur(4px); /* Stronger blur */
+    backdrop-filter: blur(5px);
 }
 
 #overlay.show {
@@ -51,19 +51,18 @@ h1, h2 {
     position: fixed;
     top: 50%;
     left: 50%;
-    /* Start slightly smaller for pop effect */
     transform: translate(-50%, -50%) scale(0.8);
     background: white;
-    /* Padding: Top/Sides=10px, Bottom=50px (Polaroid style) */
-    padding: 10px 10px 50px 10px; 
+    /* This padding creates the white border. Thicker bottom = Polaroid style */
+    padding: 10px 10px 60px 10px; 
     box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-    z-index: 9999; /* HIGHEST LAYER - Sits on top of overlay */
+    z-index: 20001; /* HIGHEST - Must be higher than overlay */
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border-radius: 4px;
     
-    /* Ensure box shrinks to fit image */
+    /* Ensure the box fits the image exactly */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,8 +79,8 @@ h1, h2 {
 /* 3. The Image Inside */
 #lightbox img {
     display: block;
-    max-height: 50vh; /* REDUCED SIZE: Fits comfortably on screen */
-    max-width: 90vw;  /* Prevents side overflow on mobile */
+    max-height: 45vh; /* SMALLER SIZE: Fits nicely on screen */
+    max-width: 85vw;  
     width: auto;
     height: auto;
     border: 1px solid #eee;
