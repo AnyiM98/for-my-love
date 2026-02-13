@@ -231,8 +231,9 @@ nav button.active {
     padding-bottom: 20px;
 }
 
+/* --- THIS IS THE UPDATED PART --- */
 .letter-text {
-    text-align: left;
+    text-align: center; /* Changed from left to center */
     background: #fff0f3;
     padding: 20px;
     border-radius: 10px;
