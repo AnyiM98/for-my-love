@@ -1,5 +1,6 @@
 // CONFIGURATION
 const SECRET_CODE = "i love you"; 
+const TYPEWRITER_SPEED = 40; // milliseconds per character (lower is faster)
 
 // DOM Elements
 const loginScreen = document.getElementById('login-screen');
@@ -7,6 +8,13 @@ const welcomeScreen = document.getElementById('welcome-screen');
 const mainContent = document.getElementById('main-content');
 const passwordInput = document.getElementById('password-input');
 const errorMessage = document.getElementById('error-message');
+const letterTextElement = document.querySelector('.letter-text');
+
+// Store the original HTML of the letter so we can type it out
+let originalLetterHTML = letterTextElement.innerHTML;
+// Clear it immediately so it's empty when the page loads
+letterTextElement.innerHTML = "";
+let isTypewriterStarted = false;
 
 // Check Password Function
 function checkPassword() {
@@ -28,16 +36,52 @@ function checkPassword() {
                 setTimeout(() => {
                     welcomeScreen.style.display = 'none';
                     mainContent.classList.remove('hidden');
-                }, 1000); // Wait for fade out to finish
-            }, 2500); // How long the welcome message stays visible
+                    
+                    // 4. Start Typewriter Effect
+                    if (!isTypewriterStarted) {
+                        startTypewriter();
+                        isTypewriterStarted = true;
+                    }
+
+                }, 1000); 
+            }, 2500); 
             
         }, 500);
     } else {
-        // Wrong Password
         errorMessage.style.display = 'block';
         passwordInput.classList.add('shake');
         setTimeout(() => passwordInput.classList.remove('shake'), 500);
     }
+}
+
+// Typewriter Logic
+function startTypewriter() {
+    let i = 0;
+    
+    function type() {
+        if (i <= originalLetterHTML.length) {
+            // If we encounter a tag opening '<', fast forward to the closing '>'
+            // This ensures we render formatting (bold, breaks) instantly and don't break HTML
+            if (originalLetterHTML.charAt(i) === '<') {
+                let tagEnd = originalLetterHTML.indexOf('>', i);
+                if (tagEnd !== -1) {
+                    i = tagEnd + 1; // Skip the whole tag
+                }
+            } else {
+                i++; // Just a regular character, move forward one
+            }
+            
+            // Update the text
+            letterTextElement.innerHTML = originalLetterHTML.substring(0, i);
+            
+            // Loop
+            if (i < originalLetterHTML.length) {
+                setTimeout(type, TYPEWRITER_SPEED);
+            }
+        }
+    }
+    
+    type();
 }
 
 // Allow pressing "Enter" key
@@ -57,7 +101,6 @@ function showSection(sectionId) {
     const buttons = document.querySelectorAll('nav button');
     buttons.forEach(btn => btn.classList.remove('active'));
     
-    // Highlight the clicked button
     const buttonsArray = Array.from(buttons);
     const clickedBtn = buttonsArray.find(btn => btn.getAttribute('onclick').includes(sectionId));
     if (clickedBtn) {
