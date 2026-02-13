@@ -13,6 +13,8 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
+    <div id="overlay"></div>
+
     <div id="hearts-container"></div>
 
     <div id="login-screen">
@@ -24,12 +26,10 @@
         </div>
     </div>
 
-    <div id="welcome-screen" class="hidden" style="flex-direction: column;">
-        <h1 class="fade-in-text" style="font-size: 4rem; margin: 0;">Welcome my love</h1>
-        <div style="height: 60px;"></div>
-        <h1 class="heartbeat" style="font-size: 8rem; margin: 0; line-height: 1.1;">
-            Happy Valentines ❤️
-        </h1>
+    <div id="welcome-screen" class="hidden">
+        <h1 class="fade-in-text">Welcome my love</h1>
+        <div style="height: 40px;"></div>
+        <h1 class="heartbeat">Happy Valentines ❤️</h1>
     </div>
 
     <div id="main-content" class="hidden">
@@ -65,12 +65,9 @@
             <div id="music" class="section hidden">
                 <h2>Songs that remind me of you</h2>
                 <div class="song-list">
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0hVXuCcriWRGvwMV1r5Yn9?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3U4isOIWM3VvDubwSI3y7a?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0xG2QOxNtyEzM2uyMECWjX?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0Yz6pPFinS7EKfaZRMY4uT?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/69vToJ9BMbbLlFZo7k7A7B?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1pi9XMrwEocfCRlDiEDrHM?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3ZFTRBb448X826D43rYjF0?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0ADG9OgdVTL7fgSAPUNoUY?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7iN1s7xHE4ifF5povM6A48?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
             </div>
 
@@ -91,7 +88,7 @@
 
             <div id="gallery" class="section hidden">
                 <h2>14 of our fav times together ❤️</h2>
-                <p style="font-size: 0.9rem; color: #d63384; margin-bottom: 30px;">(Tap a photo to bring it to the front)</p>
+                <p style="color: #d63384; font-size: 0.9rem; margin-bottom: 10px;">(Click a photo to see it clearly)</p>
                 
                 <div class="memory-pile">
                     <div class="polaroid" onclick="bringToFront(this)"><img src="memory1.jpeg" alt="Memory"></div>
