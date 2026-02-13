@@ -9,7 +9,11 @@ const passwordInput = document.getElementById('password-input');
 const errorMessage = document.getElementById('error-message');
 const letterTextElement = document.querySelector('.letter-text');
 const bgMusic = document.getElementById('bg-music');
+
+// Lightbox Elements
 const overlay = document.getElementById('overlay');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
 
 // Letter Typewriter Setup
 let originalLetterHTML = letterTextElement.innerHTML;
@@ -18,46 +22,30 @@ let isTypewriterStarted = false;
 let heartsInterval;
 
 /* =========================================
-   POLAROID LOGIC
+   LIGHTBOX (POPUP) LOGIC
    ========================================= */
 
-function bringToFront(element) {
-    // 1. If already active, close it
-    if (element.classList.contains('active')) {
-        resetPolaroids();
-        return;
-    }
+function openLightbox(polaroidElement) {
+    // 1. Get the image source from the clicked polaroid
+    const imgElement = polaroidElement.querySelector('img');
+    const src = imgElement.src;
 
-    // 2. Reset others (close any open ones)
-    resetPolaroids();
+    // 2. Set the lightbox image
+    lightboxImg.src = src;
 
-    // 3. Activate clicked one
-    element.classList.add('active');
-    
-    // 4. Show dark overlay
+    // 3. Show Overlay and Lightbox
     overlay.classList.add('show');
+    lightbox.classList.add('show');
 }
 
-function resetPolaroids() {
-    const allPolaroids = document.querySelectorAll('.polaroid');
-    
-    // Hide overlay
+function closeLightbox() {
     overlay.classList.remove('show');
-    
-    allPolaroids.forEach(card => {
-        // Remove active class
-        card.classList.remove('active');
-        
-        // CSS handles the transition back to the grid position automatically
-    });
+    lightbox.classList.remove('show');
 }
-
-// Click overlay to close
-overlay.addEventListener('click', resetPolaroids);
 
 // Escape key to close
 document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") resetPolaroids();
+    if (e.key === "Escape") closeLightbox();
 });
 
 
