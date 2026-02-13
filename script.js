@@ -1,6 +1,6 @@
 // CONFIGURATION
 const SECRET_CODE = "i love you"; 
-const TYPEWRITER_SPEED = 40; // milliseconds per character (lower is faster)
+const TYPEWRITER_SPEED = 40; // milliseconds per character
 
 // DOM Elements
 const loginScreen = document.getElementById('login-screen');
@@ -9,39 +9,52 @@ const mainContent = document.getElementById('main-content');
 const passwordInput = document.getElementById('password-input');
 const errorMessage = document.getElementById('error-message');
 const letterTextElement = document.querySelector('.letter-text');
+const bgMusic = document.getElementById('bg-music');
 
-// Store the original HTML of the letter so we can type it out
+// Store the original HTML of the letter
 let originalLetterHTML = letterTextElement.innerHTML;
-// Clear it immediately so it's empty when the page loads
+// Clear it immediately
 letterTextElement.innerHTML = "";
 let isTypewriterStarted = false;
+let heartsInterval;
 
 // Check Password Function
 function checkPassword() {
     const input = passwordInput.value.toLowerCase().trim();
     
     if (input === SECRET_CODE) {
-        // 1. Hide Login Screen
+        
+        // 1. START MUSIC IMMEDIATELY
+        // Browsers allow audio to play because the user just clicked a button
+        bgMusic.play().catch(error => {
+            console.log("Audio playback failed: " + error);
+        });
+        bgMusic.volume = 0.5; // Set volume to 50%
+
+        // 2. Hide Login Screen
         loginScreen.style.opacity = '0';
         
         setTimeout(() => {
             loginScreen.style.display = 'none';
             
-            // 2. Show Welcome Screen
+            // 3. Show Welcome Screen
             welcomeScreen.classList.remove('hidden');
             
-            // 3. Wait 2.5 seconds, then show Main Content
+            // 4. Wait 2.5 seconds, then show Main Content
             setTimeout(() => {
                 welcomeScreen.style.opacity = '0';
                 setTimeout(() => {
                     welcomeScreen.style.display = 'none';
                     mainContent.classList.remove('hidden');
                     
-                    // 4. Start Typewriter Effect
+                    // 5. Start Typewriter Effect
                     if (!isTypewriterStarted) {
                         startTypewriter();
                         isTypewriterStarted = true;
                     }
+
+                    // 6. Start Falling Hearts
+                    startHearts();
 
                 }, 1000); 
             }, 2500); 
@@ -60,21 +73,17 @@ function startTypewriter() {
     
     function type() {
         if (i <= originalLetterHTML.length) {
-            // If we encounter a tag opening '<', fast forward to the closing '>'
-            // This ensures we render formatting (bold, breaks) instantly and don't break HTML
             if (originalLetterHTML.charAt(i) === '<') {
                 let tagEnd = originalLetterHTML.indexOf('>', i);
                 if (tagEnd !== -1) {
-                    i = tagEnd + 1; // Skip the whole tag
+                    i = tagEnd + 1;
                 }
             } else {
-                i++; // Just a regular character, move forward one
+                i++;
             }
             
-            // Update the text
             letterTextElement.innerHTML = originalLetterHTML.substring(0, i);
             
-            // Loop
             if (i < originalLetterHTML.length) {
                 setTimeout(type, TYPEWRITER_SPEED);
             }
@@ -82,6 +91,30 @@ function startTypewriter() {
     }
     
     type();
+}
+
+// Falling Hearts Logic
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerHTML = '❤️';
+    
+    // Randomize position and animation properties
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // Between 2 and 5 seconds
+    heart.style.fontSize = Math.random() * 20 + 10 + 'px'; // Varying sizes
+    
+    document.body.appendChild(heart);
+    
+    // Remove heart after animation to keep browser clean
+    setTimeout(() => {
+        heart.remove();
+    }, 5000);
+}
+
+function startHearts() {
+    // Create a new heart every 300 milliseconds
+    heartsInterval = setInterval(createHeart, 300);
 }
 
 // Allow pressing "Enter" key
