@@ -22,29 +22,66 @@ h1, h2 {
     display: none !important;
 }
 
-/* OVERLAY (Background dimmer) */
-/* This sits BEHIND the active photo (z-index 9998) but ABOVE everything else */
+/* ============================
+   POPUP LAYERS (Z-Index Fix)
+   ============================ */
+
+/* 1. The Dark Overlay (Behind the popup, but above everything else) */
 #overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Darker for better contrast */
-    z-index: 9998; 
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9990; /* Very high z-index */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    backdrop-filter: blur(2px); /* Makes background slightly blurry */
+    backdrop-filter: blur(2px);
 }
 
 #overlay.show {
     opacity: 1;
     pointer-events: auto;
-    cursor: pointer;
 }
 
-/* Login Screen */
+/* 2. The Lightbox (The actual popup card) */
+#lightbox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: white;
+    padding: 15px 15px 50px 15px; /* Thicker bottom padding for Polaroid look */
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    z-index: 10000; /* Highest z-index: sits ON TOP of overlay */
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 4px;
+    max-width: 90vw;
+}
+
+#lightbox.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* The image INSIDE the popup */
+#lightbox img {
+    display: block;
+    max-height: 60vh; /* Reduced size as requested */
+    max-width: 100%;
+    width: auto;
+    border: 1px solid #eee;
+}
+
+/* ============================
+   MAIN CONTENT
+   ============================ */
+
 #login-screen {
     position: absolute;
     top: 0;
@@ -134,7 +171,7 @@ button:hover {
 /* Main Content */
 #main-content {
     width: 90%;
-    max-width: 900px; /* Slightly wider for the grid */
+    max-width: 900px;
     background: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 20px;
@@ -225,18 +262,18 @@ nav button.active {
 }
 
 /* ============================
-   POLAROID GRID (NO OVERLAP)
+   POLAROID GRID
    ============================ */
 .memory-pile {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px; /* Space between photos */
+    gap: 30px;
     padding: 20px;
 }
 
 .polaroid {
-    position: relative; /* Sticks to the grid flow */
+    position: relative;
     width: 140px;
     background: white;
     padding: 10px 10px 35px 10px;
@@ -244,10 +281,9 @@ nav button.active {
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 2px;
-    /* Default rotation handled in JS or CSS nth-child below */
 }
 
-/* Add slight random rotations using nth-child for organic look without overlap */
+/* Random-ish rotations */
 .polaroid:nth-child(odd) { transform: rotate(3deg); }
 .polaroid:nth-child(even) { transform: rotate(-3deg); }
 .polaroid:nth-child(3n) { transform: rotate(1deg); }
@@ -263,30 +299,8 @@ nav button.active {
 /* Hover State */
 .polaroid:hover {
     z-index: 20;
-    transform: scale(1.05) rotate(0deg) !important; /* Straighten on hover */
+    transform: scale(1.05) rotate(0deg) !important;
     box-shadow: 5px 8px 15px rgba(0,0,0,0.2);
-}
-
-/* ACTIVE STATE (Clicked) */
-/* IMPORTANT: position: fixed breaks it out of the grid so it can center on screen */
-.polaroid.active {
-    position: fixed; 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(2.5) !important; /* Make it BIG */
-    z-index: 9999; /* Higher than #overlay (9998) */
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    cursor: zoom-out;
-    width: auto;
-    max-width: 80vw; /* Ensure it fits on screen */
-    max-height: 80vh;
-}
-
-/* Adjust image inside active polaroid to fit nicely */
-.polaroid.active img {
-    max-height: 60vh;
-    width: auto;
-    object-fit: contain;
 }
 
 /* ANIMATIONS */
