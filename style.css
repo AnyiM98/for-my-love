@@ -76,11 +76,11 @@ h1, h2 {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* 3. The Image Inside */
+/* 3. The Image Inside - UPDATED SIZE HERE */
 #lightbox img {
     display: block;
-    max-height: 45vh; /* SMALLER SIZE: Fits nicely on screen */
-    max-width: 85vw;  
+    max-height: 60vh; /* INCREASED from 45vh to 60vh (approx 25-30% bigger) */
+    max-width: 90vw;  /* Slightly increased width allowance too */
     width: auto;
     height: auto;
     border: 1px solid #eee;
