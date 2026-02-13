@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    position: relative; /* Important for hearts positioning */
+    position: relative;
 }
 
 h1, h2 {
@@ -45,7 +45,7 @@ h1, h2 {
     text-align: center;
     max-width: 300px;
     width: 90%;
-    z-index: 1001; /* Above hearts */
+    z-index: 1001;
 }
 
 input {
@@ -90,6 +90,7 @@ button:hover {
     height: 100%;
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
     display: flex;
+    flex-direction: column; /* Stack text vertically */
     justify-content: center;
     align-items: center;
     z-index: 999;
@@ -101,15 +102,7 @@ button:hover {
 #welcome-screen h1 {
     color: white;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    animation: pulse 2s infinite;
-    padding: 20px;
-    line-height: 1.1;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    padding: 10px;
 }
 
 /* Main Content */
@@ -125,7 +118,7 @@ button:hover {
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    z-index: 10; /* Above hearts */
+    z-index: 10;
     position: relative;
 }
 
@@ -167,11 +160,6 @@ nav button.active {
     padding-bottom: 20px;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
 .letter-text {
     text-align: left;
     background: #fff0f3;
@@ -186,11 +174,6 @@ nav button.active {
     content: '|';
     animation: blink 1s infinite;
     color: #d63384;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
 }
 
 /* Song List */
@@ -215,7 +198,7 @@ nav button.active {
     font-weight: bold;
 }
 
-/* Gallery */
+/* Gallery / Memories */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -232,6 +215,21 @@ nav button.active {
     transform: scale(1.05);
 }
 
+/* ANIMATIONS */
+
+/* Fade In */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cursor Blink */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Error Shake */
 .shake {
     animation: shake 0.5s;
 }
@@ -248,8 +246,9 @@ nav button.active {
 .heart {
     position: fixed;
     top: -10vh;
-    font-size: 1.5rem;
-    z-index: 1; /* Behind the white box, but in front of background */
+    /* Font size is set in JS randomly, but we set a default here */
+    font-size: 1.5rem; 
+    z-index: 1; 
     user-select: none;
     pointer-events: none;
     animation: fall linear forwards;
@@ -264,4 +263,18 @@ nav button.active {
         transform: translateY(110vh) rotate(360deg);
         opacity: 0.5;
     }
+}
+
+/* HEARTBEAT ANIMATION (For Happy Valentines Text) */
+.heartbeat {
+    animation: heartbeat 1.5s infinite;
+    display: inline-block;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.1); } /* Thump */
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); } /* Thump */
+    70% { transform: scale(1); }
 }
