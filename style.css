@@ -22,23 +22,25 @@ h1, h2 {
     display: none !important;
 }
 
-/* OVERLAY (Background dimmer for photos) */
+/* OVERLAY (Background dimmer) */
+/* This sits BEHIND the active photo (z-index 9998) but ABOVE everything else */
 #overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent */
-    z-index: 999; 
+    background: rgba(0, 0, 0, 0.8); /* Darker for better contrast */
+    z-index: 9998; 
     opacity: 0;
-    pointer-events: none; /* Allows clicks to pass through when hidden */
+    pointer-events: none;
     transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px); /* Makes background slightly blurry */
 }
 
 #overlay.show {
     opacity: 1;
-    pointer-events: auto; /* Catches clicks when visible */
+    pointer-events: auto;
     cursor: pointer;
 }
 
@@ -132,13 +134,13 @@ button:hover {
 /* Main Content */
 #main-content {
     width: 90%;
-    max-width: 800px;
+    max-width: 900px; /* Slightly wider for the grid */
     background: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     text-align: center;
-    height: 85vh; /* Taller to fit photos */
+    height: 85vh;
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -223,30 +225,33 @@ nav button.active {
 }
 
 /* ============================
-   POLAROID MEMORY PILE
+   POLAROID GRID (NO OVERLAP)
    ============================ */
 .memory-pile {
-    position: relative;
-    width: 100%;
-    height: 600px; /* Spacious area for scattering */
-    margin-top: 20px;
-    border-radius: 10px;
-    /* Hidden overflow ensures they don't fly off screen, 
-       but we must be careful with scatter math */
-    overflow: visible; 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* Space between photos */
+    padding: 20px;
 }
 
 .polaroid {
-    position: absolute;
-    width: 140px; /* Base size */
+    position: relative; /* Sticks to the grid flow */
+    width: 140px;
     background: white;
-    padding: 10px 10px 35px 10px; /* Thicker bottom for polaroid look */
-    box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+    padding: 10px 10px 35px 10px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
     cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transform-origin: center center;
-    z-index: 10;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 2px;
+    /* Default rotation handled in JS or CSS nth-child below */
 }
+
+/* Add slight random rotations using nth-child for organic look without overlap */
+.polaroid:nth-child(odd) { transform: rotate(3deg); }
+.polaroid:nth-child(even) { transform: rotate(-3deg); }
+.polaroid:nth-child(3n) { transform: rotate(1deg); }
+.polaroid:nth-child(4n) { transform: rotate(-1deg); }
 
 .polaroid img {
     width: 100%;
@@ -258,20 +263,30 @@ nav button.active {
 /* Hover State */
 .polaroid:hover {
     z-index: 20;
-    transform: scale(1.05) !important; /* Slight lift, keeps rotation */
-    box-shadow: 5px 8px 15px rgba(0,0,0,0.3);
+    transform: scale(1.05) rotate(0deg) !important; /* Straighten on hover */
+    box-shadow: 5px 8px 15px rgba(0,0,0,0.2);
 }
 
 /* ACTIVE STATE (Clicked) */
+/* IMPORTANT: position: fixed breaks it out of the grid so it can center on screen */
 .polaroid.active {
-    z-index: 1000 !important;
-    /* Force to center of the container */
-    top: 50% !important;
-    left: 50% !important;
-    /* Reset rotation and Scale up BIG */
-    transform: translate(-50%, -50%) scale(2.2) rotate(0deg) !important;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(2.5) !important; /* Make it BIG */
+    z-index: 9999; /* Higher than #overlay (9998) */
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     cursor: zoom-out;
+    width: auto;
+    max-width: 80vw; /* Ensure it fits on screen */
+    max-height: 80vh;
+}
+
+/* Adjust image inside active polaroid to fit nicely */
+.polaroid.active img {
+    max-height: 60vh;
+    width: auto;
+    object-fit: contain;
 }
 
 /* ANIMATIONS */
@@ -297,7 +312,6 @@ nav button.active {
     100% { transform: translateX(0); }
 }
 
-/* Falling Hearts */
 .heart {
     position: fixed;
     top: -10vh;
@@ -313,7 +327,6 @@ nav button.active {
     100% { transform: translateY(110vh) rotate(360deg); opacity: 0.5; }
 }
 
-/* Heartbeat for Welcome */
 .heartbeat {
     animation: heartbeat 1.5s infinite;
     display: inline-block;
