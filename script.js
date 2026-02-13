@@ -3,20 +3,34 @@ const SECRET_CODE = "i love you";
 
 // DOM Elements
 const loginScreen = document.getElementById('login-screen');
+const welcomeScreen = document.getElementById('welcome-screen');
 const mainContent = document.getElementById('main-content');
 const passwordInput = document.getElementById('password-input');
 const errorMessage = document.getElementById('error-message');
 
 // Check Password Function
 function checkPassword() {
-    const input = passwordInput.value.toLowerCase().trim(); // Converts input to lowercase and removes extra spaces
+    const input = passwordInput.value.toLowerCase().trim();
+    
     if (input === SECRET_CODE) {
-        // Correct Password
+        // 1. Hide Login Screen
         loginScreen.style.opacity = '0';
-        loginScreen.style.transition = 'opacity 0.5s';
+        
         setTimeout(() => {
             loginScreen.style.display = 'none';
-            mainContent.classList.remove('hidden');
+            
+            // 2. Show Welcome Screen
+            welcomeScreen.classList.remove('hidden');
+            
+            // 3. Wait 2.5 seconds, then show Main Content
+            setTimeout(() => {
+                welcomeScreen.style.opacity = '0';
+                setTimeout(() => {
+                    welcomeScreen.style.display = 'none';
+                    mainContent.classList.remove('hidden');
+                }, 1000); // Wait for fade out to finish
+            }, 2500); // How long the welcome message stays visible
+            
         }, 500);
     } else {
         // Wrong Password
@@ -44,7 +58,8 @@ function showSection(sectionId) {
     buttons.forEach(btn => btn.classList.remove('active'));
     
     // Highlight the clicked button
-    const clickedBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(sectionId));
+    const buttonsArray = Array.from(buttons);
+    const clickedBtn = buttonsArray.find(btn => btn.getAttribute('onclick').includes(sectionId));
     if (clickedBtn) {
         clickedBtn.classList.add('active');
     }
