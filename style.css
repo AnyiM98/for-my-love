@@ -10,6 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    position: relative; /* Important for hearts positioning */
 }
 
 h1, h2 {
@@ -44,6 +45,7 @@ h1, h2 {
     text-align: center;
     max-width: 300px;
     width: 90%;
+    z-index: 1001; /* Above hearts */
 }
 
 input {
@@ -79,7 +81,7 @@ button:hover {
     margin-top: 10px;
 }
 
-/* NEW Welcome Screen */
+/* WELCOME SCREEN */
 #welcome-screen {
     position: absolute;
     top: 0;
@@ -93,13 +95,15 @@ button:hover {
     z-index: 999;
     text-align: center;
     transition: opacity 1s;
+    overflow: hidden;
 }
 
 #welcome-screen h1 {
-    font-size: 3rem;
     color: white;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     animation: pulse 2s infinite;
+    padding: 20px;
+    line-height: 1.1;
 }
 
 @keyframes pulse {
@@ -119,9 +123,10 @@ button:hover {
     text-align: center;
     height: 80vh;
     overflow-y: auto;
-    /* Hide scrollbar but keep functionality */
     -ms-overflow-style: none;
     scrollbar-width: none;
+    z-index: 10; /* Above hearts */
+    position: relative;
 }
 
 #main-content::-webkit-scrollbar {
@@ -135,11 +140,11 @@ nav {
     gap: 10px;
     margin-bottom: 20px;
     flex-wrap: wrap;
-    position: sticky; /* Keeps nav at top when scrolling */
+    position: sticky;
     top: 0;
     background: rgba(255, 255, 255, 0.95);
     padding: 10px 0;
-    z-index: 10;
+    z-index: 20;
 }
 
 nav button {
@@ -174,6 +179,18 @@ nav button.active {
     border-radius: 10px;
     line-height: 1.6;
     margin-top: 10px;
+    min-height: 200px;
+}
+
+.letter-text::after {
+    content: '|';
+    animation: blink 1s infinite;
+    color: #d63384;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 /* Song List */
@@ -225,4 +242,26 @@ nav button.active {
     50% { transform: translateX(5px); }
     75% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
+}
+
+/* FALLING HEARTS ANIMATION */
+.heart {
+    position: fixed;
+    top: -10vh;
+    font-size: 1.5rem;
+    z-index: 1; /* Behind the white box, but in front of background */
+    user-select: none;
+    pointer-events: none;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.5;
+    }
 }
