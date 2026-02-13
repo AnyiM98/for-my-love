@@ -15,10 +15,6 @@
 
     <div id="overlay" onclick="closeLightbox()"></div>
 
-    <div id="lightbox" class="hidden" onclick="closeLightbox()">
-        <img id="lightbox-img" src="" alt="Zoomed Memory">
-    </div>
-
     <div id="hearts-container"></div>
 
     <div id="login-screen">
@@ -92,7 +88,6 @@
 
             <div id="gallery" class="section hidden">
                 <h2>14 of our fav times together ❤️</h2>
-                
                 <div class="memory-pile">
                     <div class="polaroid" onclick="openLightbox(this)"><img src="memory1.jpeg" alt="Memory"></div>
                     <div class="polaroid" onclick="openLightbox(this)"><img src="memory2.jpeg" alt="Memory"></div>
@@ -112,6 +107,10 @@
             </div>
 
         </div>
+    </div>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Zoomed Memory">
     </div>
 
     <script src="script.js"></script>
