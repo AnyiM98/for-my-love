@@ -22,6 +22,26 @@ h1, h2 {
     display: none !important;
 }
 
+/* OVERLAY (Background dimmer for photos) */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent */
+    z-index: 999; 
+    opacity: 0;
+    pointer-events: none; /* Allows clicks to pass through when hidden */
+    transition: opacity 0.3s ease;
+}
+
+#overlay.show {
+    opacity: 1;
+    pointer-events: auto; /* Catches clicks when visible */
+    cursor: pointer;
+}
+
 /* Login Screen */
 #login-screen {
     position: absolute;
@@ -93,16 +113,20 @@ button:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 998;
     text-align: center;
     transition: opacity 1s;
-    overflow: hidden;
 }
 
 #welcome-screen h1 {
     color: white;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    padding: 10px;
+    margin: 0;
+    font-size: 4rem;
+}
+
+#welcome-screen .heartbeat {
+    font-size: 6rem;
 }
 
 /* Main Content */
@@ -114,7 +138,7 @@ button:hover {
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     text-align: center;
-    height: 80vh;
+    height: 85vh; /* Taller to fit photos */
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -198,28 +222,30 @@ nav button.active {
     font-weight: bold;
 }
 
-/* POLAROID PILE STYLES */
+/* ============================
+   POLAROID MEMORY PILE
+   ============================ */
 .memory-pile {
     position: relative;
     width: 100%;
-    height: 400px; /* Space for the pile */
+    height: 600px; /* Spacious area for scattering */
     margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 10px;
+    /* Hidden overflow ensures they don't fly off screen, 
+       but we must be careful with scatter math */
+    overflow: visible; 
 }
 
 .polaroid {
     position: absolute;
-    width: 150px;
+    width: 140px; /* Base size */
     background: white;
-    padding: 10px 10px 30px 10px; /* Extra bottom padding for Polaroid look */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transform-origin: center;
-    transition: all 0.5s ease-in-out;
+    padding: 10px 10px 35px 10px; /* Thicker bottom for polaroid look */
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
     cursor: pointer;
-    border-radius: 2px;
-    z-index: 1;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-origin: center center;
+    z-index: 10;
 }
 
 .polaroid img {
@@ -229,18 +255,23 @@ nav button.active {
     border: 1px solid #eee;
 }
 
-/* Hover effect for unclicked items */
+/* Hover State */
 .polaroid:hover {
-    z-index: 10;
-    transform: scale(1.1) !important; /* Temporarily scale up */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    z-index: 20;
+    transform: scale(1.05) !important; /* Slight lift, keeps rotation */
+    box-shadow: 5px 8px 15px rgba(0,0,0,0.3);
 }
 
-/* The Active Class (When clicked) */
+/* ACTIVE STATE (Clicked) */
 .polaroid.active {
-    z-index: 100;
-    transform: scale(1.5) rotate(0deg) !important; /* Reset rotation and zoom in */
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    z-index: 1000 !important;
+    /* Force to center of the container */
+    top: 50% !important;
+    left: 50% !important;
+    /* Reset rotation and Scale up BIG */
+    transform: translate(-50%, -50%) scale(2.2) rotate(0deg) !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    cursor: zoom-out;
 }
 
 /* ANIMATIONS */
@@ -266,6 +297,7 @@ nav button.active {
     100% { transform: translateX(0); }
 }
 
+/* Falling Hearts */
 .heart {
     position: fixed;
     top: -10vh;
@@ -281,6 +313,7 @@ nav button.active {
     100% { transform: translateY(110vh) rotate(360deg); opacity: 0.5; }
 }
 
+/* Heartbeat for Welcome */
 .heartbeat {
     animation: heartbeat 1.5s infinite;
     display: inline-block;
