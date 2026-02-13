@@ -1,5 +1,5 @@
 // CONFIGURATION
-const TYPEWRITER_SPEED = 40; // milliseconds per character
+const TYPEWRITER_SPEED = 40; 
 
 // DOM Elements
 const loginScreen = document.getElementById('login-screen');
@@ -10,39 +10,41 @@ const errorMessage = document.getElementById('error-message');
 const letterTextElement = document.querySelector('.letter-text');
 const bgMusic = document.getElementById('bg-music');
 
-// Store the original HTML of the letter
 let originalLetterHTML = letterTextElement.innerHTML;
-// Clear it immediately
 letterTextElement.innerHTML = "";
 let isTypewriterStarted = false;
 let heartsInterval;
 
-// Carousel Logic
-let currentSlideIndex = 0;
+// POLAROID LOGIC
+// Run this when the page loads to scatter the photos
+function scatterPolaroids() {
+    const polaroids = document.querySelectorAll('.polaroid');
+    polaroids.forEach(card => {
+        // Random rotation between -20 and 20 degrees
+        const randomRotate = Math.random() * 40 - 20; 
+        // Random x/y offset (small enough to stay in container)
+        const randomX = Math.random() * 40 - 20;
+        const randomY = Math.random() * 40 - 20;
 
-function changeSlide(n) {
-    const slides = document.querySelectorAll('.carousel-slide');
-    
-    // Hide current slide
-    slides[currentSlideIndex].classList.remove('active');
-    
-    // Calculate new index
-    currentSlideIndex += n;
-    
-    // Loop back if at the end or beginning
-    if (currentSlideIndex >= slides.length) {
-        currentSlideIndex = 0;
-    }
-    if (currentSlideIndex < 0) {
-        currentSlideIndex = slides.length - 1;
-    }
-    
-    // Show new slide
-    slides[currentSlideIndex].classList.add('active');
-    
-    // Pause video if moving away from it
-    const videos = document.querySelectorAll('video');
-    videos.forEach(video => video.pause());
+        card.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
+    });
+}
+
+// Function called when clicking a polaroid
+function bringToFront(element) {
+    // 1. Remove 'active' class from all polaroids
+    const allPolaroids = document.querySelectorAll('.polaroid');
+    allPolaroids.forEach(p => {
+        p.classList.remove('active');
+        
+        // Reset them to their scattered state (we need to re-apply the random transform? 
+        // Actually, no. If we remove 'active', CSS removes the scale(1.5). 
+        // But we want to keep the rotation. 
+        // The simple way: Just removing .active reverts to the inline style we set in scatterPolaroids!
+    });
+
+    // 2. Add 'active' class to the clicked one
+    element.classList.add('active');
 }
 
 // Check Password Function
@@ -71,6 +73,9 @@ function checkPassword() {
                     welcomeScreen.style.display = 'none';
                     mainContent.classList.remove('hidden');
                     
+                    // Scatter photos once main content is visible
+                    scatterPolaroids();
+
                     if (!isTypewriterStarted) {
                         startTypewriter();
                         isTypewriterStarted = true;
@@ -134,14 +139,12 @@ function startHearts() {
     heartsInterval = setInterval(createHeart, 200);
 }
 
-// Allow pressing "Enter" key
 passwordInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         checkPassword();
     }
 });
 
-// Navigation Function
 function showSection(sectionId) {
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => section.classList.add('hidden'));
@@ -155,5 +158,10 @@ function showSection(sectionId) {
     const clickedBtn = buttonsArray.find(btn => btn.getAttribute('onclick').includes(sectionId));
     if (clickedBtn) {
         clickedBtn.classList.add('active');
+    }
+    
+    // If we switch to gallery, we might want to re-scatter or just ensure they are visible
+    if (sectionId === 'gallery') {
+        // Optional: scatterPolaroids(); // Uncomment if you want them to reshuffle every time
     }
 }
