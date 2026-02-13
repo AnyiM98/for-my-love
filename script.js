@@ -9,62 +9,116 @@ const passwordInput = document.getElementById('password-input');
 const errorMessage = document.getElementById('error-message');
 const letterTextElement = document.querySelector('.letter-text');
 const bgMusic = document.getElementById('bg-music');
+const overlay = document.getElementById('overlay');
 
+// Letter Typewriter Setup
 let originalLetterHTML = letterTextElement.innerHTML;
 letterTextElement.innerHTML = "";
 let isTypewriterStarted = false;
 let heartsInterval;
 
-// POLAROID LOGIC
-// Run this when the page loads to scatter the photos
+/* =========================================
+   POLAROID LOGIC
+   ========================================= */
+
+// Store random positions to return to after closing
+let polaroidPositions = [];
+let isScattered = false;
+
 function scatterPolaroids() {
     const polaroids = document.querySelectorAll('.polaroid');
-    polaroids.forEach(card => {
-        // Random rotation between -20 and 20 degrees
-        const randomRotate = Math.random() * 40 - 20; 
-        // Random x/y offset (small enough to stay in container)
-        const randomX = Math.random() * 40 - 20;
-        const randomY = Math.random() * 40 - 20;
-
-        card.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
-    });
-}
-
-// Function called when clicking a polaroid
-function bringToFront(element) {
-    // 1. Remove 'active' class from all polaroids
-    const allPolaroids = document.querySelectorAll('.polaroid');
-    allPolaroids.forEach(p => {
-        p.classList.remove('active');
+    
+    polaroids.forEach((card, index) => {
+        // Random rotation (-15 to 15 degrees)
+        const randomRotate = Math.random() * 30 - 15; 
         
-        // Reset them to their scattered state (we need to re-apply the random transform? 
-        // Actually, no. If we remove 'active', CSS removes the scale(1.5). 
-        // But we want to keep the rotation. 
-        // The simple way: Just removing .active reverts to the inline style we set in scatterPolaroids!
-    });
+        // Random Position (Percentages 10% to 80% to keep inside container)
+        const randomLeft = Math.random() * 70 + 10; // 10% to 80%
+        const randomTop = Math.random() * 60 + 10;  // 10% to 70%
 
-    // 2. Add 'active' class to the clicked one
-    element.classList.add('active');
+        // Store position data
+        const posData = {
+            left: randomLeft + '%',
+            top: randomTop + '%',
+            rotation: randomRotate
+        };
+        polaroidPositions[index] = posData;
+
+        // Apply styles
+        card.style.left = posData.left;
+        card.style.top = posData.top;
+        card.style.transform = `translate(-50%, -50%) rotate(${posData.rotation}deg)`;
+    });
 }
 
-// Check Password Function
+function bringToFront(element) {
+    // 1. If already active, close it
+    if (element.classList.contains('active')) {
+        resetPolaroids();
+        return;
+    }
+
+    // 2. Reset others
+    resetPolaroids();
+
+    // 3. Activate clicked one
+    element.classList.add('active');
+    
+    // 4. Show dark overlay
+    overlay.classList.add('show');
+}
+
+function resetPolaroids() {
+    const allPolaroids = document.querySelectorAll('.polaroid');
+    
+    // Hide overlay
+    overlay.classList.remove('show');
+    
+    allPolaroids.forEach((card, index) => {
+        // Remove active class
+        card.classList.remove('active');
+        
+        // Re-apply the original scattered styles
+        // Note: CSS transitions will make this smooth
+        const pos = polaroidPositions[index];
+        if (pos) {
+            card.style.left = pos.left;
+            card.style.top = pos.top;
+            card.style.transform = `translate(-50%, -50%) rotate(${pos.rotation}deg)`;
+        }
+    });
+}
+
+// Click overlay to close
+overlay.addEventListener('click', resetPolaroids);
+
+// Escape key to close
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") resetPolaroids();
+});
+
+
+/* =========================================
+   GENERAL SITE LOGIC
+   ========================================= */
+
 function checkPassword() {
     const input = passwordInput.value.toLowerCase().trim();
     
     if (input === "i love you" || input === "iloveyou") {
         
-        bgMusic.play().catch(error => {
-            console.log("Audio playback failed: " + error);
-        });
+        // Play Music
+        bgMusic.play().catch(error => console.log("Audio play error: ", error));
         bgMusic.volume = 0.5;
 
+        // Start Hearts
         startHearts();
 
+        // Animation Sequence
         loginScreen.style.opacity = '0';
         
         setTimeout(() => {
             loginScreen.style.display = 'none';
-            
             welcomeScreen.classList.remove('hidden');
             
             setTimeout(() => {
@@ -73,16 +127,13 @@ function checkPassword() {
                     welcomeScreen.style.display = 'none';
                     mainContent.classList.remove('hidden');
                     
-                    // Scatter photos once main content is visible
-                    scatterPolaroids();
-
+                    // Start Typewriter if not done
                     if (!isTypewriterStarted) {
                         startTypewriter();
                         isTypewriterStarted = true;
                     }
-
                 }, 1000); 
-            }, 2500); 
+            }, 3000); // Wait time on Welcome Screen
             
         }, 500);
     } else {
@@ -92,7 +143,6 @@ function checkPassword() {
     }
 }
 
-// Typewriter Logic
 function startTypewriter() {
     let i = 0;
     
@@ -114,11 +164,9 @@ function startTypewriter() {
             }
         }
     }
-    
     type();
 }
 
-// Falling Hearts Logic
 function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
@@ -140,11 +188,10 @@ function startHearts() {
 }
 
 passwordInput.addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        checkPassword();
-    }
+    if (e.key === 'Enter') checkPassword();
 });
 
+// Navigation
 function showSection(sectionId) {
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => section.classList.add('hidden'));
@@ -159,9 +206,13 @@ function showSection(sectionId) {
     if (clickedBtn) {
         clickedBtn.classList.add('active');
     }
-    
-    // If we switch to gallery, we might want to re-scatter or just ensure they are visible
-    if (sectionId === 'gallery') {
-        // Optional: scatterPolaroids(); // Uncomment if you want them to reshuffle every time
+
+    // Trigger scatter only when gallery is first opened
+    if (sectionId === 'gallery' && !isScattered) {
+        // Small delay to ensure container has dimensions
+        setTimeout(() => {
+            scatterPolaroids();
+            isScattered = true;
+        }, 100);
     }
 }
