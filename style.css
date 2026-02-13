@@ -9,7 +9,7 @@ body {
     /* Desktop Fallback */
     width: 100vw;
     height: 100vh;
-    /* Mobile Optimization */
+    /* Mobile Optimization (iPhone) */
     height: 100dvh; 
     
     display: flex;
@@ -241,15 +241,18 @@ nav button.active {
     padding-bottom: 20px;
 }
 
-/* Letter Text */
+/* LETTER TEXT - UPDATED TO CINZEL */
 .letter-text {
+    font-family: 'Cinzel', serif; /* New Font */
+    font-weight: 600;
     text-align: center;
     background: #fff0f3;
     padding: 20px;
     border-radius: 10px;
-    line-height: 1.6;
+    line-height: 1.8; /* Increased for elegance */
     margin-top: 10px;
     min-height: 200px;
+    font-size: 1.1rem;
 }
 
 .letter-text::after {
@@ -377,7 +380,7 @@ nav button.active {
    ============================ */
 @media (max-width: 600px) {
     #welcome-screen h1 {
-        font-size: 2.5rem; /* Smaller text for mobile */
+        font-size: 2.5rem;
     }
     
     #welcome-screen .heartbeat {
@@ -389,10 +392,9 @@ nav button.active {
         padding: 15px 10px;
     }
     
-    /* Make polaroids slightly smaller to fit two in a row on iPhone 15 Pro */
+    /* Make polaroids slightly smaller to fit two in a row on iPhone */
     .polaroid {
         width: 125px; 
-        gap: 15px;
     }
     
     .memory-pile {
