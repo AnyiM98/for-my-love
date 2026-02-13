@@ -1,5 +1,4 @@
 // CONFIGURATION
-// No specific constant needed for password anymore as we check two options below
 const TYPEWRITER_SPEED = 40; // milliseconds per character
 
 // DOM Elements
@@ -18,40 +17,60 @@ letterTextElement.innerHTML = "";
 let isTypewriterStarted = false;
 let heartsInterval;
 
+// Carousel Logic
+let currentSlideIndex = 0;
+
+function changeSlide(n) {
+    const slides = document.querySelectorAll('.carousel-slide');
+    
+    // Hide current slide
+    slides[currentSlideIndex].classList.remove('active');
+    
+    // Calculate new index
+    currentSlideIndex += n;
+    
+    // Loop back if at the end or beginning
+    if (currentSlideIndex >= slides.length) {
+        currentSlideIndex = 0;
+    }
+    if (currentSlideIndex < 0) {
+        currentSlideIndex = slides.length - 1;
+    }
+    
+    // Show new slide
+    slides[currentSlideIndex].classList.add('active');
+    
+    // Pause video if moving away from it
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => video.pause());
+}
+
 // Check Password Function
 function checkPassword() {
-    // Convert to lowercase and remove whitespace from both ends
     const input = passwordInput.value.toLowerCase().trim();
     
-    // Check for "i love you" OR "iloveyou"
     if (input === "i love you" || input === "iloveyou") {
         
-        // 1. START MUSIC IMMEDIATELY
         bgMusic.play().catch(error => {
             console.log("Audio playback failed: " + error);
         });
         bgMusic.volume = 0.5;
 
-        // 2. Start Falling Hearts IMMEDIATELY (so they appear on welcome screen)
         startHearts();
 
-        // 3. Hide Login Screen
         loginScreen.style.opacity = '0';
         
         setTimeout(() => {
             loginScreen.style.display = 'none';
             
-            // 4. Show Welcome Screen
             welcomeScreen.classList.remove('hidden');
             
-            // 5. Wait 2.5 seconds, then show Main Content
             setTimeout(() => {
                 welcomeScreen.style.opacity = '0';
                 setTimeout(() => {
                     welcomeScreen.style.display = 'none';
                     mainContent.classList.remove('hidden');
                     
-                    // 6. Start Typewriter Effect
                     if (!isTypewriterStarted) {
                         startTypewriter();
                         isTypewriterStarted = true;
@@ -100,13 +119,8 @@ function createHeart() {
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
     
-    // Randomize position and animation properties
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-    
-    // INCREASED SIZE BY 50%
-    // Old: Math.random() * 20 + 10 + 'px' (10px to 30px)
-    // New: Math.random() * 30 + 15 + 'px' (15px to 45px)
     heart.style.fontSize = Math.random() * 30 + 15 + 'px';
     
     document.body.appendChild(heart);
@@ -117,8 +131,6 @@ function createHeart() {
 }
 
 function startHearts() {
-    // INCREASED FREQUENCY (NUMBER OF HEARTS) BY 50%
-    // Old: 300ms. New: 200ms (300 / 1.5)
     heartsInterval = setInterval(createHeart, 200);
 }
 
